@@ -6,18 +6,18 @@ services:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: root
     volumes:
-      - mysql-data:/var/lib/mysql    #データの永続化のために必要
+      - mysql-data:/var/lib/mysql
     ports:
-      - "4306:3306"  #両方3306でもok。詳細は下の「番外編：DBをsequel proで可視化したい」へ
+      - "4306:3306"
 
   app:
-    tty: true          #コンテナ上でbinding.pryするために必要
-    stdin_open: true   #コンテナ上でbinding.pryするために必要
+    tty: true
+    stdin_open: true
     build: .
     command: /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
-      - .:/myproject    #ローカルのディレクトリをコンテナ上にマウント
-      - bundle:/usr/local/bundle    #bundle installした後buildし直さなくてよくなる
+      - .:/myproject
+      - bundle:/usr/local/bundle
     ports:
       - "3000:3000"
     links:
@@ -25,4 +25,4 @@ services:
 
 volumes:
   mysql-data:
-  bundle:      #bundle installした後buildし直さなくてよくなる
+  bundle:
